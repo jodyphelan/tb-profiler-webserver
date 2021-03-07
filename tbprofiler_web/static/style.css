@@ -1,0 +1,39 @@
+.jumbotron-map{
+		background: linear-gradient(180deg,rgba(120, 120, 120, 0.45),rgba(120, 120, 120, 0.65)),url('/static/map.jpg');
+		background-size: cover;
+		background-repeat: no-repeat;
+		color: white;
+		background-position-x: 50%;
+		background-position-y: 50%;
+
+
+	}
+
+.jumbotron-members{
+		background: linear-gradient(180deg,rgba(120, 120, 120, 0.65),rgba(120, 120, 120, 0.75)),url('/static/img_3.jpg');
+		background-size: cover;
+		background-repeat: no-repeat;
+		color: white;
+		background-position-x: 50%;
+		background-position-y: 52%;
+
+
+	}
+
+pre {
+	display: block;
+	padding: 9.5px;
+	margin: 0 0 10px;
+	font-size: 13px;
+	padding-left: 20px;
+	color: white;
+	word-break: break-all;
+	word-wrap: break-word;
+	background-color: black;
+	border: 1px solid black;
+	border-radius: 4px;
+}
+
+.card {
+	margin: 10px;
+}

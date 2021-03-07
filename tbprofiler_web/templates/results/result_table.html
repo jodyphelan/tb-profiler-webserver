@@ -1,0 +1,185 @@
+{% import 'utils.html' as utils %}
+{% extends 'base.html' %}
+
+{% block header %}
+
+
+{% endblock %}
+
+{% block content %}
+<div class="pt-4">
+	<div class="row justify-content-md-center">
+		<div class="col-md-6 pb-4">
+			<div class="card">
+				<div class="card-header">
+					Search for samples
+				</div>
+				<div class="card-body">
+					<p>
+					Use the controls to filter and display runs. If you want to see all results then just click search without modifying anything.
+				</p>
+					<form method="post" enctype=multipart/form-data>
+						<div class="form-row">
+							<div class="form-group col-md-6">
+
+								<label for="sample_name">Sample name</label>
+								<input type="text" class="form-control" id="sample_name" name="sample_name" placeholder="">
+
+								<!-- <label for="project_id">Project ID</label> -->
+								<!-- <input type="text" class="form-control" id="project_id" name="project_id" placeholder=""> -->
+
+							</div>
+
+							<div class="form-group col-md-6">
+
+								<label for="lineage">Lineage</label>
+								<input type="text" class="form-control" id="lineage" name="lineage" placeholder="">
+
+								<label for="drtype">Drug resistance type</label>
+						    <select multiple class="form-control" id="drtype" name="drtype">
+									<option value="Sensitive">Pan-susceptible</option>
+					        <option value="Drug-resistant">Drug-resistant</option>
+					        <option value="MDR">MDR</option>
+									<option value="XDR">XDR</option>
+					    	</select>
+
+							</div>
+						</div>
+						<hr>
+						<button type="submit" class="btn btn-primary" name="search_strains_button">Search</button>
+					</form>
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="button_div">
+
+	</div>
+	<hr>
+	<table class="table table-hover" id="results_table">
+		<thead>
+			<tr>
+				<!-- <th scope="col"></th> -->
+				<th scope="col">ID</th>
+				<th scope="col">Date analysed</th>
+				<th scope="col">DR-type</th>
+				<th scope="col">Lineage</th>
+				<th scope="col">Status</th>
+
+			</tr>
+		</thead>
+		<tbody id="resultsTable">
+			{% for result in results %}
+				<tr name="{{ result['id'] }}">
+					<!-- <td><input class="checkbox" type="checkbox" name="id_{{ result['id'] }}" id="{{ result['id'] }}" value="{{ result['id'] }}" autocomplete="off"></td> -->
+					<td><a href="{{ url_for('results.run_result', sample_id=result['id']) }}">{{ result['sample_name'] }}</a></td>
+					<td>{{ result['created'] }}</td>
+					{% if result['status']=="processing" %}
+						<td></td>
+						<td></td>
+						<td>
+							<span class="badge badge-warning">Processing</span>
+						</td>
+
+					{% else %}
+						<td>{{ utils.drtype_badge(result["drtype"]) }}</td>
+						<td>{{ result["lineage"] }}</td>
+						<td>
+							<span class="badge badge-success">Completed</span>
+						</td>
+
+					{% endif %}
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+
+<script type="text/javascript">
+
+	function download_selected(table){
+		console.log("Downloading")
+		var rowData = table.rows({selected:true}).data();
+		ids = {}
+		$.each($(rowData),function(key,value){
+			ids[value[0].substring(18,54)] = value[0].substring(18,54); //"name" being the value of your first column.
+		});
+		console.log()
+		post(window.location.href,{"ids":JSON.stringify(ids),"button":"download"})
+		//post(window.location.href,ids)
+	}
+
+	function delete_selected(table){
+		console.log("Deleting")
+		var rowData = table.rows({selected:true}).data();
+		ids = {}
+		$.each($(rowData),function(key,value){
+			ids[value[0].substring(18,54)] = value[0].substring(18,54); //"name" being the value of your first column.
+		});
+		console.log(ids)
+		post(window.location.href,{"ids":JSON.stringify(ids),"button":"delete"})
+	}
+
+	$(document).ready( function () {
+			var table = $('#results_table').DataTable( {
+				select: true
+		    // dom: 'Blfrtip',
+			})
+			new $.fn.dataTable.Buttons( table, {
+		    buttons: [
+						'selectAll',
+						'selectNone',
+						'pdf',
+						'excelHtml5',
+						{
+							"text":"Generate mutations table",
+							"action": function ( e, dt, node, config ) {
+	                download_selected(this)
+	            }
+						}
+						{% if user!="public" %}
+						,{
+							"text":"Delete",
+							"action": function ( e, dt, node, config ) {
+	                delete_selected(this)
+	            }
+						}
+						{% endif %}
+		    ],
+			} );
+
+		table.buttons().container()
+    .appendTo( $('.col-md-6:eq(0)', table.table().container() ) )
+	} );
+
+	function post(path, params, method='post') {
+
+		// The rest of this code assumes you are not using a library.
+		// It can be made less wordy if you use one.
+		const form = document.createElement('form');
+		form.method = method;
+		form.action = path;
+
+		for (const key in params) {
+			if (params.hasOwnProperty(key)) {
+				const hiddenField = document.createElement('input');
+				hiddenField.type = 'hidden';
+				hiddenField.name = key;
+				hiddenField.value = params[key];
+
+				form.appendChild(hiddenField);
+			}
+		}
+
+		document.body.appendChild(form);
+		form.submit();
+	}
+
+
+
+</script>
+
+
+{% endblock %}

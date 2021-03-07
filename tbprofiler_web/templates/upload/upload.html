@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block header %}
+
+
+{% endblock %}
+
+{% block title %}
+	Upload -
+{% endblock %}
+
+{% block content %}
+<div class="pt-4 pb-4">
+	Upload your next generation sequencing data in <b>fastQ</b> format. Files will
+	be processed using the tb-profiler pipeline with default parameters. You may
+	select the technology used to generate the data (Illumina or Oxford Nanopore).
+	Samples will be process with a first in first out policy so please be patient
+	as there may be runs waiting to be processed before yours.
+
+</div>
+<div class="pb-4">
+    <b>Please note:</b> at the moment we can only accomodate uploads of under 1GB.
+    If you have files which are larger or you require many	isolates to be processed
+    and have access to a linux or osX operating system then	it might be worthwhile
+    to run the commandline version of tb-profiler. For more information on this please visit the
+	<a href="https://github.com/jodyphelan/TBProfiler/">github repository</a>.
+</div>
+
+
+
+
+<div class="row justify-content-md-center">
+	<div class="col-md-6 pb-4">
+		<div class="card shadow border-dark">
+			<div class="card-header bg-dark text-white">
+				Single sample
+			</div>
+			<div class="card-body">
+				<p class="card-text">
+					You can upload one or two (forward and reverse) fastq files. When you
+					upload your data, the run will be be assigned a unique ID. Please take
+					a note of this ID as you will need to to find your results later.
+				</p>
+				<form method="post" enctype=multipart/form-data>
+					{% if g.user %}
+						<input type="text" class="form-control w-50" id="sample_name" name="sample_name" placeholder="Sample name">
+					{% endif %}
+
+					<div class="form-group pt-2">
+						<label for="file1">Fastq file 1:</label>
+						<input type="file" name="file1" class="form-control-file" id="file1">
+					</div>
+					<div class="form-group">
+						<label for="file2">Fastq file 2 (optional):</label>
+						<input type="file" name="file2" class="form-control-file" id="file2">
+					</div>
+					<div class="form-check">
+						<input class="form-check-input" type="radio" name="platform" id="IlluminaRadio" value="illumina" checked>
+						<label class="form-check-label" for="IlluminaRadio">
+							Illumina
+						</label>
+					</div>
+					<div class="form-check">
+						<input class="form-check-input" type="radio" name="platform" id="OxfordNanoporeRadio" value="nanopore">
+						<label class="form-check-label" for="OxfordNanoporeRadio">
+							Oxford Nanopore
+						</label>
+					</div>
+					<hr>
+					<button type="submit" class="btn btn-primary" name="single_sample_submit" id="single_sample_submit">Submit</button>
+				</form>
+			</div>
+		</div>
+	</div>
+<!-- </div> -->
+
+
+
+
+<!-- <div class="row justify-content-md-center"> -->
+	<div class="col-md-6 pb-4">
+		<div class="card shadow border-dark">
+			<div class="card-header bg-dark text-white">
+				Batch upload
+			</div>
+			<div class="card-body">
+				<p class="card-text">
+					You can upload multiple samples together to batch process them. At the
+					 moment batch uploading only supports paried end reads. By default, files must use
+					 <b>_1.fastq.gz</b> and <b>_2.fastq.gz</b> as the file suffix in order for them
+					 to be paired correctly. The suffix can be changed in the advanced options.
+				</p>
+				<form method="post" enctype=multipart/form-data>
+					<div class="form-group pt-2">
+						<label for="file1">Fastq files</label>
+						<input type="file" name="files" class="form-control-file" id="files" multiple>
+					</div>
+					<div class="form-check">
+						<input class="form-check-input" type="radio" name="platform" id="IlluminaRadio" value="illumina" checked>
+						<label class="form-check-label" for="IlluminaRadio">
+							Illumina
+						</label>
+					</div>
+					<div class="form-check">
+						<input class="form-check-input" type="radio" name="platform" id="OxfordNanoporeRadio" value="nanopore">
+						<label class="form-check-label" for="OxfordNanoporeRadio">
+							Oxford Nanopore
+						</label>
+					</div>
+					<a class="btn btn-outline-primary mt-4 mb-4" data-toggle="collapse" href="#advanced_options_collapse" role="button" aria-expanded="false" aria-controls="advanced_options_collapse">
+						Advanced options
+					</a>
+
+					<div class="collapse" id="advanced_options_collapse">
+						<h6>File suffix</h6>
+						<div class="mb-2">
+							Read suffix. Use this option to change the default suffix of files.
+							For example if your fastq file is named <b>sample1_R1.fastq.gz</b>	 then your
+							suffix should be <b>_R1.fastq.gz</b>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+									<input type="text" class="form-control" id="r1_suffix" name="r1_suffix" placeholder="Forward file suffix">
+							</div>
+							<div class="col-md-6">
+									<input type="text" class="form-control" id="r2_suffix" name="r2_suffix" placeholder="Reverse file suffix">
+							</div>
+						</div>
+
+
+					</div>
+					<hr>
+					<button type="submit" class="btn btn-primary" name="multi_sample_submit" id="multi_sample_submit">Submit</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+
+
+	<div class="row justify-content-md-center">
+		<div class="col-md-6 pb-4">
+			<div class="card">
+				<div class="card-header">
+					Fill in your username and password to access your profile.
+				</div>
+				<div class="card-body">
+
+					<form method="post">
+						<div class="form-group">
+							<label for="exampleInputEmail1">Email address</label>
+							<input name="username" id="username" type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email" required>
+						</div>
+						<div class="form-group">
+					    <label for="exampleInputPassword1">Password</label>
+					    <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+					  </div>
+						<div class="clearfix">
+								<button type="submit" class="btn btn-primary float-left">Submit</button>
+								<a class="btn btn-outline-success float-right" href="{{ url_for('auth.register') }}">Register new user</a>
+						</div>
+
+
+				  </form>
+
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

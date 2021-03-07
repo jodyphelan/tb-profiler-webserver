@@ -1,0 +1,145 @@
+{% import 'utils.html' as utils %}
+{% extends 'base.html' %}
+
+{% block header %}
+
+
+{% endblock %}
+
+{% block content %}
+	<div class="row text-center mx-auto">
+		<div class="col-md-1">
+
+		</div>
+		<div class="col-md-10 pt-4">
+			<img id="logo" src="{{ url_for('static', filename='tb-profiler-logo-rectangle.png') }}" alt="error" width="40%;"></img>
+			<div class="p-4">
+				Welcome to the webserver of TB-Profiler - a pipeline which allows users
+				to analyse <i>M. tuberculosis</i> whole genome sequencing data to
+				predict lineage and drug resistance. Follow the instructions below to
+				upload a new sample or view analysed runs.
+			</div>
+
+
+
+			<h5 class="">How does it work?</h5>
+			<div class="pb-4">
+				The pipeline searches for small variants and big deletions associated
+				with drug resistance. It will also report the lineage. By default it
+				uses Trimmomatic to trim the reads, BWA (or minimap2 for nanopore) to
+				align to the reference genome and GATK (open source v4) to call variants.
+			</div>
+
+
+			<div class="row justify-content-md-center">
+				<div class="col-md-6 pb-4">
+					<div class="card border-dark text-center shadow">
+					  <div class="card-header bg-dark text-white">
+					    Step 1
+					  </div>
+					  <div class="card-body">
+					    <h5 class="card-title">Profile your sample</h5>
+
+									<p class="card-text">
+										Upload your next generation sequencing data in <b>fastQ</b> format.
+										You can upload one or two (forward and reverse) fastq files. When you
+										upload your data, the run will be be assigned a unique ID.
+										Please take a note of this ID as you will need to to find your results later.
+										Batch upload of samples is also possible.
+									</p>
+
+
+					    <a class="btn btn-dark" href="{{ url_for('upload.upload') }}">Upload</a>
+					  </div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="row justify-content-md-center">
+				<div class="col-md-6 pb-4">
+					<div class="card border-dark text-center shadow">
+					  <div class="card-header bg-dark text-white">
+					    Step 2
+					  </div>
+					  <div class="card-body">
+					    <h5 class="card-title">View the results</h5>
+
+									<p class="card-text">
+										Find your results by entering you unique run ID directly into the search box below.
+									</p>
+
+							<form method="post" enctype=multipart/form-data>
+								<div class="row justify-content-md-center">
+									<div class="col-md-6">
+										<input type="text" name="sample_id" class="form-control" placeholder="Sample ID">
+									</div>
+									<button type="submit" class="btn btn-dark">Submit</button>
+								</div>
+							</form>
+					  </div>
+					</div>
+				</div>
+			</div>
+
+
+
+			<h5 class="pt-4">Which mutations are being used to prodict resistance?</h5>
+			<div class="pb-4">
+				Resistance is predicted using the curated <a href="https://github.com/jodyphelan/tbdb">tbdb database</a>.
+				This database has been tested using over 17,000 samples with genotypic and
+				phenotypic data. You can read more about the markers present in the library
+				at the time of testing <a href="https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-019-0650-x">here</a> or you can take a look at the
+				up to date CSV file <a href="https://github.com/jodyphelan/tbdb/blob/master/tbdb.csv">here</a>.
+			</div>
+
+			<h5 class="pt-4">Need to analyse isolates from the SRA?</h5>
+			<div class="pb-4">
+				To benchmark the performance we have run TB-Profiler for over 16,000
+				publically available <i>M. tuberculosis</i> isolates. We have made these
+				available <a href="https:tbdr.lshtm.ac.uk/SRA">here</a>. With each new
+				release	of TB-Profiler we will update all result files.
+			</div>
+
+			<h5 class="pt-4">Can I run TB-Profiler on my own computer?</h5>
+			<div class="pb-4">
+				If you have access to a linux or osX operating system then you can download
+				the commandline version of TB-Profiler. For more information on this please
+				visit the	<a href="https://github.com/jodyphelan/TBProfiler/">github repository</a>.
+				If you would like to create your own instance of this webserver, the code
+				is fully open-source and available at this <a href="https://github.com/jodyphelan/tb-profiler-webserver/">github repository</a>
+			</div>
+
+			<h5 class="pt-4">Give feedback or request a feature</h5>
+			<div class="pb-4">
+				We are always looking to improve TB-Profiler. If you see some results that
+				don't look right or would like to see some additional functionality in the
+				future, don't hesitate to get in touch via the
+				<a href="https://github.com/jodyphelan/tb-profiler-webserver/issues"></a>
+				section on our github page.
+			</div>
+
+			<h5 class="pt-4">Citation</h5>
+			<div class="pb-4">
+				Phelan, J. E. et al. Integrating informatics tools and portable sequencing
+				technology for rapid detection of resistance to anti-tuberculous drugs.
+				Genome Med. 11, 41 (2019).
+			</div>
+            <div class="pb-4">
+                Coll F, et al. Rapid determination of anti-tuberculosis drug resistance
+                from whole-genome sequences. Genome Medicine 7: 51 (2015).
+            </div>
+
+
+			<hr>
+			<h6 class="">Disclaimer</h6>
+			<div class="">
+				This tool is for Research Use Only. It has not been approved, cleared,
+				or licensed by any regulatory authority. By submitting sequence data the
+				 user acknowledges no intended medical purpose or objective such as
+				 clinical diagnosis, patient management, or human clinical trials.
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
