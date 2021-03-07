@@ -4,3 +4,4 @@ dist/
 __pycache__/
 .save.cson
 tbprofiler_web/static/results/*
+dump.rdb

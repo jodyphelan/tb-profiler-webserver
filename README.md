@@ -7,19 +7,19 @@ Installation requires tb-profiler, flask, celery and redis.
 To run it on your local machine:
 ```
 # Install libraries
-conda install python=3.7 flask redis celery statsmodels bwa samtools bcftools parallel freebayes gatk4 bedtools samclip delly
-pip install neo4j redis tqdm
+conda install python=3.7 flask redis celery tb-profiler
+pip install neo4j redis
 
+git clone https://github.com/jodyphelan/tb-profiler-webserver.git
+de tb-profiler-webserver
 python setup.py install
 
 # Run flask
-export FLASK_APP=tbprofiler_web
-export FLASK_ENV=development
-flask run
+bin/flash
 
-# Run rabbit-mq server
-rabbitmq-server
+# Run redis
+redis-server
 
 # Run celery
-celery -A tbprofiler_web.worker worker --loglevel=info --concurrency=1
+bin/celery
 ```
